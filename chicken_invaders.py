@@ -1,7 +1,7 @@
 import sys
 from settings import Settings
 import pygame
-
+import game_functions as gf
 def run_game():
     pygame.init()
     ai_settings = Settings()
@@ -11,9 +11,7 @@ def run_game():
     
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
+        gf.check_events()
         screen.fill(ai_settings.bg_color)
         pygame.display.flip()
 run_game()
