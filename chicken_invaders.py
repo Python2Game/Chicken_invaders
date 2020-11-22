@@ -9,10 +9,11 @@ def run_game():
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Chicken Invaders")
-    ship=Ship(screen)
+    me=Ship(screen)
 
     while True:
-        gf.check_events()
+        gf.check_events(ship)
         screen.fill(ai_settings.bg_color)
         pygame.display.flip()
+        gf.update_screen(ai_settings, screen, ship)
 run_game()
