@@ -14,3 +14,5 @@
 7.Added ship movement, ship speed, ship update
 
 8.Then we created module bullet.py which contains Bullet class
+9. Create chicken class and its elements
+
