@@ -16,15 +16,13 @@ def run_game():
     aliens = Chicken(ai_settings, screen)
     bullets = Group()
     aliens = Group()
-    enemy_bullets = Group()
     gf.create_fleet(ai_settings, screen,ship, aliens)
 
     while True:
         gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
-        gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
-        gf.update_enemy_bullets(ai_settings, screen, stats, sb, ship, aliens, enemy_bullets)
-        gf.update_aliens(ai_settings, aliens, enemy_bullets)
-        gf.update_screen(ai_settings, screen, ship, aliens, bullets,enemy_bullets)
+        gf.update_bullets(bullets)
+        gf.update_aliens(ai_settings, aliens)
+        gf.update_screen(ai_settings, screen, ship, aliens, bullets)
 
 run_game()
