@@ -3,6 +3,7 @@ import pygame
 import random
 from pygame import mixer
 from bullet import Bullet
+from chicken import Chicken
 
 def check_keydown_events(event, ai_settings, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -41,10 +42,11 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ai_settings, screen, ship, bullets)
 
 
-def update_screen(ai_settings, screen, ship, bullets):
+def update_screen(ai_settings, screen, ship, aliens, bullets):
     screen.fill((0,0,0))
     screen.blit(ai_settings.bg, (0, 0))
     ship.blitme()
+    aliens.blitme()
     for bullet in bullets.sprites():
     	bullet.draw_bullet()
     pygame.display.flip() 
