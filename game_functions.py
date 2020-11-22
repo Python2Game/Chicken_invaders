@@ -46,7 +46,6 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     screen.fill((0,0,0))
     screen.blit(ai_settings.bg, (0, 0))
     ship.blitme()
-    aliens.blitme()
     aliens.draw(screen)
     for bullet in bullets.sprites():
     	bullet.draw_bullet()
@@ -66,3 +65,15 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 	if len(bullets) < ai_settings.bullets_allowed:
 		new_bullet = Bullet(ai_settings, screen, ship)
 		bullets.add(new_bullet)
+
+
+def create_fleet(ai_settings, screen, ship, aliens):
+    alien = Chicken(ai_settings, screen)
+    alien_width = alien.rect.width
+    available_space_x = ai_settings.screen_width - 2 * alien_width
+    number_aliens_x = int(available_space_x / (2 * alien_width))
+    for alien_number in range(number_aliens_x):
+        alien = Chicken(ai_settings, screen)
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        aliens.add(alien)
