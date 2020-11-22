@@ -2,6 +2,7 @@ import sys
 import pygame
 import random
 from pygame import mixer
+from bullet import Bullet
 
 def check_keydown_events(event, ai_settings, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -37,9 +38,9 @@ def check_events(ai_settings, screen, ship, bullets):
             sys.exit() 
             
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ship)
+            check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
-            check_keyup_events(event, ship)
+            check_keyup_events(event, ai_settings, screen, ship, bullets)
 
 
 def update_screen(ai_settings, screen, ship, bullets):
