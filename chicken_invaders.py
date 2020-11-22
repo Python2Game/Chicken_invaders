@@ -3,6 +3,7 @@ from settings import Settings
 from me import Ship
 import pygame
 import game_functions as gf
+from pygame.sprite import Group
 def run_game():
     pygame.init()
     ai_settings = Settings()
@@ -10,9 +11,10 @@ def run_game():
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Chicken Invaders")
     ship=Ship(ai_settings, screen)
-
+    bullets = Group()
     while True:
-        gf.check_events(ship)
+        gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
-        gf.update_screen(ai_settings, screen, ship)
+        bullets.update()
+        gf.update_screen(ai_settings, screen, ship, bullets)
 run_game()
