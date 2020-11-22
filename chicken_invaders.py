@@ -1,5 +1,5 @@
 import sys
-from settings import Settings
+from settings import Settings   
 from me import Ship
 import pygame
 import game_functions as gf
