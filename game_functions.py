@@ -83,7 +83,7 @@ def get_number_aliens_x(ai_settings, alien_width):
 
     return number_aliens_x
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
-    alien = Chicken(ai_settings, screen)
+    alien = Chicken (ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.x = alien.x
@@ -95,3 +95,5 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
 
+def update_aliens(aliens):
+    aliens.update()
