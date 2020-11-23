@@ -15,7 +15,7 @@ def run_game():
     pygame.display.set_caption("Chicken Invaders")
     
     FPS = 60
-	clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
     # Make a ship, a group of bullets, and a group of aliens.
     ship=Ship(ai_settings, screen)
     bullets = Group()
