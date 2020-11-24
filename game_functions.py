@@ -12,7 +12,7 @@ def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
         filename = 'highscore.txt'
         with open(filename, 'w') as file_object:
             file_object.write(str(stats.high_score))
-        sys.exit()    
+        sys.exit()
 
     if stats.game_active:
         if event.key == pygame.K_RIGHT:
@@ -33,17 +33,17 @@ def check_keyup_events(event, ai_settings, stats, screen, ship, bullets):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-            
+
 def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit() 
-            
+            sys.exit()
+
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship, screen, bullets, ai_settings)
-        
+
 
 
 def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets):
@@ -63,7 +63,7 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bulle
 
 
     pygame.sprite.groupcollide(bullets, enemy_bullets, True, True)
-    pygame.display.flip() 
+    pygame.display.flip()
 
 
 def update_bullets(ai_settings, screen, stats, ship, aliens, bullets):
@@ -95,7 +95,7 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
 
-def create_alien(ai_settings, screen, stats, aliens, alien_number, row_number):
+def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien = Chicken (ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
@@ -144,4 +144,4 @@ def load_score(stats):
 		pass
 
 
-    
+

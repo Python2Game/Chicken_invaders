@@ -30,7 +30,7 @@ def run_game():
     enemy_bullets = Group()
 
     stats = GameStats(ai_settings)
-
+    sb = Scoreboard(ai_settings, screen, stats)
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
     # Load the high score.
