@@ -8,6 +8,12 @@ from chicken import Chicken
 from bullet import Enemy_Bullet
 
 def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
+    if event.key == pygame.K_ESCAPE:
+        filename = 'highscore.txt'
+        with open(filename, 'w') as file_object:
+            file_object.write(str(stats.high_score))
+        sys.exit()    
+
     if stats.game_active:
         if event.key == pygame.K_RIGHT:
             ship.moving_right = True
@@ -45,20 +51,25 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bulle
     screen.blit(ai_settings.bg, (0, 0))
     ship.blitme()
     aliens.draw(screen)
+
+    # Draw the score information and print statement.
+    sb.show_score()
+
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     for enemy_bullet in enemy_bullets.sprites():
             enemy_bullet.draw_enemy_bullet()
 
+
+
     pygame.sprite.groupcollide(bullets, enemy_bullets, True, True)
     pygame.display.flip() 
 
 
-"""Обновление позиции пуль и уничтожение старых пуль."""
 def update_bullets(ai_settings, screen, stats, ship, aliens, bullets):
-    # Обновление позиций пуль.
+    # Update bullet positions.
     bullets.update()
-    # Удаление пуль, вышедших за край экрана.
+    # Get rid of bullets that have dissapeared.
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
@@ -92,7 +103,7 @@ def create_alien(ai_settings, screen, stats, aliens, alien_number, row_number):
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
 
-def create_fleet(ai_settings, screen, stats, ship, aliens):
+def create_fleet(ai_settings, screen, ship, aliens):
     alien = Chicken(ai_settings, screen)
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
     number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
@@ -100,7 +111,7 @@ def create_fleet(ai_settings, screen, stats, ship, aliens):
 
     for row_number in range(number_rows):
         for alien_number in range(number_aliens_x):
-            create_alien(ai_settings, screen, aliens, alien_number,row_number)
+            create_alien(ai_settings, screen, aliens, alien_number, row_number)
 
 def check_fleet_edges(ai_settings, aliens):
     for alien in aliens.sprites():
@@ -117,6 +128,20 @@ def change_fleet_direction(ai_settings, aliens):
 def update_aliens(ai_settings, aliens):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+def check_high_score(stats, sb):
+	if stats.score > stats.high_score:
+		stats.high_score = stats.score
+		sb.prep_high_score()
+
+def load_score(stats):
+	filename = 'highscore.txt'
+	try:
+		with open(filename) as file_object:
+			score = file_object.read()
+			stats.high_score = int(score)
+	except FileNotFoundError:
+		pass
 
 
     

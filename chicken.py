@@ -6,7 +6,7 @@ class Chicken(Sprite):
 		super(Chicken, self).__init__()
 		self.screen = screen
 		self.ai_settings = ai_settings
-
+        
 		self.image = pygame.image.load('images/enemy.png')
 		self.rect = self.image.get_rect()
 
