@@ -51,8 +51,7 @@ def run_game():
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
             gf.update_enemy_bullets(ai_settings, screen, stats, sb, ship, aliens, enemy_bullets)
             gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets)
-        if not stats.game_active:
-            game_over.draw_button()
+        
         gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, enemy_bullets)
 
 run_game()

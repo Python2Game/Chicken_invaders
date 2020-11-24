@@ -12,7 +12,7 @@ class Scoreboard():
         # Font settings for scoring information.
         self.text_color = (200, 200, 200)
         self.font = pygame.font.Font('invasion.TTF', 30)
-        
+
         # Prepare the initial score images.
         self.prep_score()
         self.prep_high_score()
@@ -22,7 +22,7 @@ class Scoreboard():
     def prep_score(self):
         rounded_score = int(round(self.stats.score, -1))
         score_str = "SCORE: " + "{:,}".format(rounded_score)
-        self.score_image = self.font.render(score_str, True, self.text_color, self.ai_settings.bg)    
+        self.score_image = self.font.render(score_str, True, self.text_color, self.ai_settings.bg)
 
         # Display the score at the top right of the screen.
         self.score_rect = self.score_image.get_rect()
@@ -60,4 +60,4 @@ class Scoreboard():
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
-        self.ships.draw(self.screen)            
+        self.ships.draw(self.screen)
