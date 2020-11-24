@@ -1,5 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
+import random
+pygame.mixer.init()
 
 class Bullet(Sprite):
 	def __init__(self, ai_settings, screen, ship):

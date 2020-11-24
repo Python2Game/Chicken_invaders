@@ -14,12 +14,13 @@ background_music = pygame.mixer.Sound('sounds/background_music.wav')
 load_music.play()
 
 def run_game():
+    # Initialize pygame, settings, and screen object.
     pygame.init()
     ai_settings = Settings()
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Chicken Invaders")
-    
+    # Set FPS
     FPS = 60
     clock = pygame.time.Clock()
 
@@ -29,8 +30,11 @@ def run_game():
     aliens = Group()
     enemy_bullets = Group()
 
+    # Create an instance to store game statistics, a quit statement and create a scoreboard.
     stats = GameStats(ai_settings)
+    sb = Scoreboard(ai_settings, screen, stats)
 
+    # Create the fleet of aliens.
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
     # Load the high score.
@@ -38,7 +42,7 @@ def run_game():
     sb.prep_high_score()
     sb.show_score()
 
-
+    # Start the main loop for the game.
     while True:
         clock.tick(FPS)
         gf.check_events(ai_settings, screen, stats, ship, bullets, aliens, enemy_bullets, load_music, background_music, sb)

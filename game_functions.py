@@ -22,21 +22,24 @@ def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
         elif event.key == pygame.K_SPACE:
             fire_bullet(ai_settings, screen, ship, bullets)
 
-def fire_bullet(ai_settings, screen, stats, ship, bullets):
+def fire_bullet(ai_settings, screen, ship, bullets):
     if len(bullets) < ai_settings.bullets_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
 
-def check_keyup_events(event, ai_settings, stats, screen, ship, bullets):
+def check_keyup_events(event, ship):
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
             
-def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets):
+def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets, sb, load_music, background_music):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            filename = 'highscore.txt'
+            with open(filename, 'w') as file_object:
+                file_object.write(str(stats.high_score))
             sys.exit() 
             
         elif event.type == pygame.KEYDOWN:
@@ -46,7 +49,7 @@ def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets
         
 
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets):
+def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets, sb):
     screen.fill((0,0,0))
     screen.blit(ai_settings.bg, (0, 0))
     ship.blitme()
@@ -66,7 +69,7 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bulle
     pygame.display.flip() 
 
 
-def update_bullets(ai_settings, screen, stats, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, ship, aliens, bullets, sb):
     # Update bullet positions.
     bullets.update()
     # Get rid of bullets that have dissapeared.
@@ -76,14 +79,34 @@ def update_bullets(ai_settings, screen, stats, ship, aliens, bullets):
     check_bullet_alien_collisions(ai_settings, screen,  ship, aliens, bullets)
 
 
-def update_enemy_bullets(ai_settings, screen, stats, ship, aliens, enemy_bullets):
+def update_enemy_bullets(ai_settings, screen, stats, ship, aliens, enemy_bullets, sb):
     enemy_bullets.update()
     for enemy_bullet in enemy_bullets.copy():
         if enemy_bullet.rect.top >= ai_settings.screen_height:
             enemy_bullets.remove(enemy_bullet)
 
-def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bullets, sb):
+    # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+            sb.prep_score()
+        check_high_score(stats, sb)
+
+    if len(aliens) == 0:
+		# If the entire fleet is destroyed, start a new level
+        bullets.empty()
+        ai_settings.increase_speed()
+
+		# Increase level.
+        stats.level += 1
+        sb.prep_level()
+		# sb.show_score()
+
+        create_fleet(ai_settings, screen, ship, aliens)    
+
 
 def get_number_aliens_x(ai_settings, alien_width):
     available_space_x = ai_settings.screen_width - 2 * alien_width
@@ -100,7 +123,7 @@ def create_alien(ai_settings, screen, stats, aliens, alien_number, row_number):
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.x = alien.x
-    alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
+    alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number + 30
     aliens.add(alien)
 
 def create_fleet(ai_settings, screen, ship, aliens):
