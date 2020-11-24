@@ -7,15 +7,16 @@ from bullet import Bullet
 from chicken import Chicken
 from bullet import Enemy_Bullet
 
-def check_keydown_events(event, ai_settings, screen, ship, bullets):
-    if event.key == pygame.K_RIGHT:
-        ship.moving_right = True
-    elif event.key == pygame.K_LEFT:
-        ship.moving_left = True
-    elif event.key == pygame.K_SPACE:
-        fire_bullet(ai_settings, screen, ship, bullets)
+def check_keydown_events(event, ai_settings, screen, ship, bullets, stats):
+    if stats.game_active:
+         if event.key == pygame.K_RIGHT:
+             ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            ship.moving_left = True
+        elif event.key == pygame.K_SPACE:
+            fire_bullet(ai_settings, screen, ship, bullets)
 
-def check_keyup_events(event, ai_settings, screen, ship, bullets):
+def check_keyup_events(event, ai_settings, stats, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
     elif event.key == pygame.K_LEFT:

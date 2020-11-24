@@ -6,6 +6,7 @@ from me import Ship
 import pygame
 import game_functions as gf
 from pygame.sprite import Group
+from game_stats import GameStats
 
 def run_game():
     pygame.init()
@@ -16,21 +17,24 @@ def run_game():
     
     FPS = 60
     clock = pygame.time.Clock()
+
     # Make a ship, a group of bullets, and a group of aliens.
     ship=Ship(ai_settings, screen)
     bullets = Group()
     aliens = Group()
     enemy_bullets = Group()
 
+    stats = GameStats(ai_settings)
+
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
     while True:
         clock.tick(FPS)
-        gf.check_events(ai_settings, screen, ship, bullets, aliens, enemy_bullets)
+        gf.check_events(ai_settings, screen, stats, ship, bullets, aliens, enemy_bullets)
         ship.update()
-        gf.update_bullets(ai_settings, screen,  ship, aliens, bullets)
-        gf.update_enemy_bullets(ai_settings, screen,ship, aliens, enemy_bullets)
-        gf.update_aliens(ai_settings, aliens)
-        gf.update_screen(ai_settings, screen, ship, aliens, bullets, enemy_bullets)
+        gf.update_bullets(ai_settings, screen, stats,  ship, aliens, bullets)
+        gf.update_enemy_bullets(ai_settings, screen, stats, ship, aliens, enemy_bullets)
+        gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets, enemy_bullets)
+        gf.update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets)
 
 run_game()
