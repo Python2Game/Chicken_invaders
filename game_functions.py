@@ -37,22 +37,8 @@ def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship, screen, bullets, ai_settings)
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-			mouse_x, mouse_y = pygame.mouse.get_pos()
-			check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y, event, enemy_bullets)
+        
 
-def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y, event, sb, enemy_bullets):
-	button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
-
-	
-	if button_clicked and not stats.game_active:
-		# Hide the mouse cursor.
-		pygame.mouse.set_visible(False)
-
-		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets)
-
-	elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets)
 
 def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets):
     screen.fill((0,0,0))
