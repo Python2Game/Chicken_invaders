@@ -9,8 +9,8 @@ from bullet import Enemy_Bullet
 
 def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
     if stats.game_active:
-         if event.key == pygame.K_RIGHT:
-             ship.moving_right = True
+        if event.key == pygame.K_RIGHT:
+            ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             ship.moving_left = True
         elif event.key == pygame.K_SPACE:
