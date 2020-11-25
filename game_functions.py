@@ -35,18 +35,19 @@ def fire_bullet(ai_settings, screen, ship, bullets):
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
 
-def check_keyup_events(event, ship):
-    if event.key == pygame.K_RIGHT:
-        ship.moving_right = False
-    elif event.key == pygame.K_LEFT:
-        ship.moving_left = False
-
 def alien_shoot(ai_settings, screen, aliens, enemy_bullets):
 	# Create a new bullet and add it to the bullets group.
 	enemy_fire = mixer.Sound('sounds/enemy_fire.wav')
 	if len(enemy_bullets) < ai_settings.enemy_bullets_allowed:
 		new_bullet = Enemy_Bullet(ai_settings, screen, aliens, enemy_fire)
 		enemy_bullets.add(new_bullet)
+
+def check_keyup_events(event, ship):
+    if event.key == pygame.K_RIGHT:
+        ship.moving_right = False
+    elif event.key == pygame.K_LEFT:
+        ship.moving_left = False
+
 		        
 def check_events(ai_settings, screen, stats, play_button, ship, bullets,aliens, enemy_bullets, sb, load_music, background_music):
     for event in pygame.event.get():
@@ -224,6 +225,13 @@ def change_fleet_direction(ai_settings, aliens):
     for alien in aliens.sprites():
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
+
+def check_aliens_bottom(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over):
+	screen_rect = screen.get_rect()
+	for alien in aliens.sprites():
+		if alien.rect.bottom >= screen_rect.bottom:
+			ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
+			break
 
 def ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over):
 	if stats.ships_left > 0:
