@@ -1,8 +1,10 @@
+import pygame
 import time
 import random
 from settings import Settings   
 from me import Ship
-import pygame
+from button import Button
+from button import Game_Over
 import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
@@ -20,6 +22,7 @@ def run_game():
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Chicken Invaders")
+
     # Set FPS
     FPS = 60
     clock = pygame.time.Clock()
@@ -37,6 +40,10 @@ def run_game():
     # Create the fleet of aliens.
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
+    # Make the Play and Game Over button.
+	play_button = Button(ai_settings, screen, "PRESS ENTER")
+	game_over = Game_Over(ai_settings, screen, "GAME OVER")
+
     # Load the high score.
     gf.load_score(stats)
     sb.prep_high_score()
@@ -45,13 +52,14 @@ def run_game():
     # Start the main loop for the game.
     while True:
         clock.tick(FPS)
-        gf.check_events(ai_settings, screen, stats, ship, bullets, aliens, enemy_bullets, load_music, background_music, sb)
+        gf.check_events(ai_settings, screen, stats, ship, play_button, bullets, aliens, enemy_bullets, load_music, background_music, sb)
         if stats.game_active:
             ship.update()
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
             gf.update_enemy_bullets(ai_settings, screen, stats, sb, ship, aliens, enemy_bullets)
-            gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets)
-        
-        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, enemy_bullets)
+            gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
+        if not stats.game_active:
+			game_over.draw_button()
+        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button, qs, enemy_bullets, game_over)
 
 run_game()

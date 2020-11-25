@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 
 class Ship(Sprite):
+    
     def __init__(self, ai_settings, screen):
         super(Ship, self).__init__()
         self.screen = screen

@@ -34,7 +34,7 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
             
-def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets, sb, load_music, background_music):
+def check_events(ai_settings, screen, stats, play_button, ship, bullets,aliens, enemy_bullets, sb, load_music, background_music):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             filename = 'highscore.txt'
@@ -64,7 +64,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bul
 		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
 
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets, sb):
+def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button, enemy_bullets, sb, qs, game_over):
     screen.fill((0,0,0))
     screen.blit(ai_settings.bg, (0, 0))
     ship.blitme()
@@ -75,12 +75,32 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bulle
 
     for bullet in bullets.sprites():
         bullet.draw_bullet()
-    for enemy_bullet in enemy_bullets.sprites():
-            enemy_bullet.draw_enemy_bullet()
+
+    # Draw the play button if the game is inactive.
+	if not stats.game_active:
+		play_button.draw_button()
+		qs.show_quit()
+
+	if game_over.over:
+		game_over.draw_button()
+
+	if stats.game_active:	
+		# Redraw alien bullets
+		for enemy_bullet in enemy_bullets.sprites():
+			enemy_bullet.draw_enemy_bullet()
+
+		# Make the aliens shoot randomly
+		if random.randrange(0, 50) == 1:
+			alien_shoot(ai_settings, screen, aliens, enemy_bullets)
+    
 
 
 
     pygame.sprite.groupcollide(bullets, enemy_bullets, True, True)
+
+        # Turn off game over flag
+		game_over.over = False
+
     pygame.display.flip()
 
 
@@ -202,9 +222,21 @@ def ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullet
 		go.play()
 
 
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    # Look for alien-ship collisions
+	if pygame.sprite.spritecollideany(ship, aliens):
+		ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
+
+	# # Look for enemy bullet-ship collisions
+	if pygame.sprite.spritecollideany(ship, enemy_bullets):
+		ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
+
+	# Look for aliens htting the bottom of the screen.
+	check_aliens_bottom(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
+
 
 def check_high_score(stats, sb):
 	if stats.score > stats.high_score:
