@@ -29,6 +29,8 @@ def start_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, e
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):
+	# Create a new bullet and add it to the bullets group.
+	ship_fire = mixer.Sound('sounds/fire.wav')
     if len(bullets) < ai_settings.bullets_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
@@ -39,7 +41,13 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-            
+def alien_shoot(ai_settings, screen, aliens, enemy_bullets):
+	# Create a new bullet and add it to the bullets group.
+	enemy_fire = mixer.Sound('sounds/enemy_fire.wav')
+	if len(enemy_bullets) < ai_settings.enemy_bullets_allowed:
+		new_bullet = Enemy_Bullet(ai_settings, screen, aliens, enemy_fire)
+		enemy_bullets.add(new_bullet)
+		        
 def check_events(ai_settings, screen, stats, play_button, ship, bullets,aliens, enemy_bullets, sb, load_music, background_music):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -128,11 +136,9 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
 		# Make the aliens shoot randomly
 		if random.randrange(0, 50) == 1:
 			alien_shoot(ai_settings, screen, aliens, enemy_bullets)
-    
-
-
-
-    pygame.sprite.groupcollide(bullets, enemy_bullets, True, True)
+        
+        # Check collisions
+        pygame.sprite.groupcollide(bullets, enemy_bullets, True, True)
 
         # Turn off game over flag
 		game_over.over = False
@@ -140,17 +146,17 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
     pygame.display.flip()
 
 
-def update_bullets(ai_settings, screen, stats, ship, aliens, bullets, sb):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, chicken_sound):
     # Update bullet positions.
     bullets.update()
     # Get rid of bullets that have dissapeared.
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    check_bullet_alien_collisions(ai_settings, screen,  ship, aliens, bullets)
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets, chicken_sound)
 
 
-def update_enemy_bullets(ai_settings, screen, stats, ship, aliens, enemy_bullets, sb):
+def update_enemy_bullets(ai_settings, screen, stats, sb, ship, aliens, enemy_bullets):
     enemy_bullets.update()
     for enemy_bullet in enemy_bullets.copy():
         if enemy_bullet.rect.top >= ai_settings.screen_height:
@@ -162,6 +168,7 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bull
 
     if collisions:
         for aliens in collisions.values():
+            chicken_sound.play()
             stats.score += ai_settings.alien_points * len(aliens)
             sb.prep_score()
         check_high_score(stats, sb)
