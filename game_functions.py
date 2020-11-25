@@ -49,9 +49,10 @@ def check_events(ai_settings, screen, stats, play_button, ship, bullets,aliens, 
             sys.exit() 
             
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, screen, ship, bullets)
+            check_keydown_events(event, ai_settings, screen, ship, bullets, stats)
+            start_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, event, sb, enemy_bullets, load_music, background_music)
         elif event.type == pygame.KEYUP:
-            check_keyup_events(event, ship, screen, bullets, ai_settings)
+            check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
 			mouse_x, mouse_y = pygame.mouse.get_pos()
 			check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y, event, sb, enemy_bullets, load_music, background_music)
