@@ -46,7 +46,22 @@ def check_events(ai_settings, screen, stats, ship, bullets,aliens, enemy_bullets
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship, screen, bullets, ai_settings)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+			mouse_x, mouse_y = pygame.mouse.get_pos()
+			check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y, event, sb, enemy_bullets, load_music, background_music)
 
+def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y, event, sb, enemy_bullets, load_music, background_music):
+	button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+
+	
+	if button_clicked and not stats.game_active:
+		# Hide the mouse cursor.
+		pygame.mouse.set_visible(False)
+
+		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
+
+	elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
 
 
 def update_screen(ai_settings, screen, stats, ship, aliens, bullets, enemy_bullets, sb):
@@ -146,6 +161,45 @@ def change_fleet_direction(ai_settings, aliens):
     for alien in aliens.sprites():
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
+
+def ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over):
+	if stats.ships_left > 0:
+		# Decrement ships left.
+		stats.ships_left -= 1
+		
+
+		explosion = mixer.Sound('sounds/explosion.wav')
+		explosion.play()
+		# Create list to store existing aliens
+		enemies = []
+		for alien in aliens:
+			enemies.append(alien.rect.y)
+
+		# Update scoreboard.
+		sb.prep_ships()
+
+		# Empty the list of bullets.
+		bullets.empty()
+		enemy_bullets.empty()
+
+		#Center the ship and move the aliens up.
+		ship.center_ship()
+		alien = Chicken(ai_settings, screen)
+		print(enemies[0])
+		for alien in aliens:
+			alien.rect.top -= enemies[0] - 110 
+		aliens.update()
+
+		# Pause.
+		sleep(0.5)
+	else:
+		stats.ships_left = -1
+		# sb.prep_ships()
+		stats.game_active = False
+		pygame.mouse.set_visible(True)
+		game_over.over = True
+		go = mixer.Sound('sounds/game_over.wav')
+		go.play()
 
 
 def update_aliens(ai_settings, aliens):
