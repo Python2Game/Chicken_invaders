@@ -6,6 +6,7 @@ class Settings():
         # Screen Settings
         self.screen_width = 1200
         self.screen_height = 670
+        
 
         self.bg = pygame.image.load('images/space.jpg')
 
@@ -23,7 +24,6 @@ class Settings():
 
         # Alien settings
         self.fleet_drop_speed = 8
-      
         
         # How quickly the game speeds up.
         self.speed_up_scale = 1.1

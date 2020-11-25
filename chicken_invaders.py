@@ -31,14 +31,14 @@ def run_game():
     # Make a ship, a group of bullets, and a group of aliens.
     ship=Ship(ai_settings, screen)
     bullets = Group()
-    aliens = Group()
     enemy_bullets = Group()
+    aliens = Group()
+    
 
     # Create an instance to store game statistics, a quit statement and create a scoreboard.
     stats = GameStats(ai_settings)
     sb = Scoreboard(ai_settings, screen, stats)
     qs = Quit_State(ai_settings, screen)
-
 
     # Create the fleet of aliens.
     gf.create_fleet(ai_settings, screen, ship, aliens)
