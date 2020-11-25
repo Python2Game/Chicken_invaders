@@ -4,21 +4,33 @@ import random
 pygame.mixer.init()
 
 class Bullet(Sprite):
-	def __init__(self, ai_settings, screen, ship):
-		super(Bullet, self).__init__()
+#Класс для управления пулями, выпущенными кораблем.
+	def __init__(self, ai_settings, screen, ship, ship_fire):
+		super().__init__()
 		self.screen = screen
-	   
+	    
+
 		self.image = pygame.image.load('images/bullet.png')
+		ship_fire.play()
 		self.rect = self.image.get_rect()
 		self.rect.centerx = ship.rect.centerx
+		#Пуля должна появляться у верхнего края корабля
+		#для «выстрела» из корабля 
 		self.rect.top = ship.rect.top
-
+        #Store the bullet's position as a decimal value.
 		self.y = float(self.rect.y)
+		# Bullet properties
+		#скорости пули сохраняются в self.speed_factor
 		self.speed_factor = ai_settings.bullet_speed_factor
 
+    #Перемещает пулю вверх по экрану.
 	def update(self):
+		# Update the decimal position of the bullet
 		self.y -= self.speed_factor
+		# Update the rect position
 		self.rect.y = self.y
+
+    #Вывод пули на экран
 	def draw_bullet(self):
 		self.screen.blit(self.image, self.rect)
 
