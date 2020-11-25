@@ -20,14 +20,16 @@ class Chicken(Sprite):
 	def blitme(self):
 		self.screen.blit(self.image, self.rect)
 
-	def update(self):
-		self.x += (self.ai_settings.alien_speed_factor *self.ai_settings.fleet_direction)
-		self.rect.x = self.x
-
+	
 	def check_edges(self):
 		screen_rect = self.screen.get_rect()
 		if self.rect.right >= screen_rect.right-10:
 			return True
 		elif self.rect.left <= 10:
 			return True
+
+	def update(self):
+		self.x += (self.ai_settings.alien_speed_factor *self.ai_settings.fleet_direction)
+		self.rect.x = self.x
+
 

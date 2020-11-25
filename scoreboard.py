@@ -61,3 +61,27 @@ class Scoreboard():
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
         self.ships.draw(self.screen)
+
+class Quit_State():
+	def __init__(self, ai_settings, screen):
+		self.screen = screen
+		self.screen_rect = screen.get_rect()
+		self.ai_settings = ai_settings
+
+		# Font settings for scoring information.
+		self.text_color = (0, 0, 0)
+		# self.font = pygame.font.Font('invasion.TTF', 40)
+
+		self.quit_statement(ai_settings)
+
+	def quit_statement(self, ai_settings):
+		quit_state = "'Enter' to start"
+		self.font = pygame.font.Font('invasion.TTF', 20)
+		self.quit_state = self.font.render(quit_state, True, self.text_color, (71, 230, 44))
+		self.quit_rect = self.quit_state.get_rect()
+		self.quit_rect.center = self.screen_rect.center
+		self.quit_rect.centery = self.screen_rect.centery + 136
+
+
+	def show_quit(self):
+		self.screen.blit(self.quit_state, self.quit_rect)

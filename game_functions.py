@@ -22,6 +22,12 @@ def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
         elif event.key == pygame.K_SPACE:
             fire_bullet(ai_settings, screen, ship, bullets)
 
+def start_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, event, sb, enemy_bullets, load_music, background_music):
+	if not stats.game_active:
+		if event.key == pygame.K_RETURN:
+			reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
+
+
 def fire_bullet(ai_settings, screen, ship, bullets):
     if len(bullets) < ai_settings.bullets_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
@@ -62,6 +68,35 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bul
 
 	elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
 		reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
+
+def reset_game(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music):
+	# Reset the game settings.
+	ai_settings.initialize_dynamic_settings()
+
+	# pygame.mixer.music.stop()
+	load_music.stop()
+	background_music.play(-1)
+
+	# Reset the game statistics.
+	stats.reset_stats()
+	stats.game_active = True
+
+	# Show resetted score
+	sb.prep_score()
+	sb.prep_high_score()
+	sb.prep_level()
+	sb.prep_ships()
+	sb.show_score()
+
+
+	# Empty the list of aliens and bullets.
+	aliens.empty()
+	bullets.empty()
+	enemy_bullets.empty()
+
+	# Create a new fleet and center the ship.
+	create_fleet(ai_settings, screen, ship, aliens)
+	ship.center_ship()
 
 
 def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button, enemy_bullets, sb, qs, game_over):

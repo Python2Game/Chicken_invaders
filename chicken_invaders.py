@@ -9,6 +9,7 @@ import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
 from scoreboard import Scoreboard
+from scoreboard import Quit_State
 
 pygame.mixer.init()
 load_music = pygame.mixer.Sound('sounds/load_music.wav')
@@ -36,6 +37,8 @@ def run_game():
     # Create an instance to store game statistics, a quit statement and create a scoreboard.
     stats = GameStats(ai_settings)
     sb = Scoreboard(ai_settings, screen, stats)
+    qs = Quit_State(ai_settings, screen)
+
 
     # Create the fleet of aliens.
     gf.create_fleet(ai_settings, screen, ship, aliens)
