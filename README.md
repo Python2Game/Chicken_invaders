@@ -19,3 +19,7 @@
 
 10. Then created bullets of chickens
 
+11.Then we created scoreboard.py and button.py
+
+
+
