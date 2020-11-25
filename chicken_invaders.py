@@ -15,6 +15,7 @@ pygame.mixer.init()
 load_music = pygame.mixer.Sound('sounds/load_music.wav')
 background_music = pygame.mixer.Sound('sounds/background_music.wav')
 load_music.play()
+chicken_sound = pygame.mixer.Sound('sounds/chicken_sound.wav')
 
 def run_game():
     # Initialize pygame, settings, and screen object.
@@ -44,8 +45,8 @@ def run_game():
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
     # Make the Play and Game Over button.
-	play_button = Button(ai_settings, screen, "PRESS ENTER")
-	game_over = Game_Over(ai_settings, screen, "GAME OVER")
+    play_button = Button(ai_settings, screen, "PRESS ENTER")
+    game_over = Game_Over(ai_settings, screen, "GAME OVER")
 
     # Load the high score.
     gf.load_score(stats)
@@ -55,14 +56,14 @@ def run_game():
     # Start the main loop for the game.
     while True:
         clock.tick(FPS)
-        gf.check_events(ai_settings, screen, stats, ship, play_button, bullets, aliens, enemy_bullets, load_music, background_music, sb)
+        gf.check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets, sb, enemy_bullets, load_music, background_music)
         if stats.game_active:
             ship.update()
-            gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
+            gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, chicken_sound)
             gf.update_enemy_bullets(ai_settings, screen, stats, sb, ship, aliens, enemy_bullets)
             gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullets, game_over)
         if not stats.game_active:
-			game_over.draw_button()
+            game_over.draw_button()
         gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button, qs, enemy_bullets, game_over)
 
 run_game()
