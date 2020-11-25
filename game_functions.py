@@ -280,7 +280,7 @@ def ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets, enemy_bullet
 		print(enemies[0])
 		for alien in aliens:
 			alien.rect.top -= enemies[0] - 110 
-		aliens.update()
+		aliens.update(0.18)
 
 		# Pause.
 		sleep(0.5)

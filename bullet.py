@@ -41,6 +41,10 @@ class Enemy_Bullet(Sprite):
 		self.screen = screen
 
 		self.image = pygame.image.load('images/bullet_enemy.png')
+		self.sprites = []
+		self.sprites.append(pygame.image.load('images/e3.png'))
+		self.current = 0
+		self.image1 = self.sprites[self.current]
 		self.rect = self.image.get_rect()		
 		enemies = []
 		for alien in aliens:
@@ -57,6 +61,13 @@ class Enemy_Bullet(Sprite):
 	def update(self):
 		self.y += self.speed_factor
 		self.rect.y = self.y
+		if self.rect.bottom >= 700 and self.rect.bottom <= 709:
+			self.current += 1
+			self.image = self.image1
+			self.speed_factor = 0.05
+		if self.rect.bottom >710:
+			self.speed_factor = 100
+
 
 	def draw_enemy_bullet(self):
 		self.screen.blit(self.image, self.rect)
