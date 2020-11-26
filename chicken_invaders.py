@@ -1,4 +1,5 @@
 import pygame
+import sys
 import time
 import random
 from settings import Settings   
